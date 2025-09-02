@@ -1,19 +1,34 @@
 import { Injectable } from '@nestjs/common';
+import { CreateConcertDto } from './dto/create-concert.dto';
+import { UpdateConcertDto } from './dto/update-concert.dto';
+import { InjectModel } from '@nestjs/mongoose';
+import { Concert, ConcertDocument } from './schemas/concerts.schema';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class ConcertsService {
-    private readonly concerts = [
-        {id:1, name:"concert1" , description:"description1"},
-        {id:2, name:"concert2" , description:"description2"},
-        {id:3, name:"concert3" , description:"description3"},
-    ];
+  constructor(
+    @InjectModel(Concert.name) private concertModel: Model<ConcertDocument>,
+  ){}
 
-    findAll() {
-        return this.concerts
-    }
+  
+  create(createConcertDto: CreateConcertDto) {
+    return 'This action adds a new concert';
+  }
 
-    create(concert: {id: number, name: string, description: string}){
-        this.concerts.push(concert)
-        return this.concerts
-    }
+  findAll() {
+    return `This action returns all concerts`;
+  }
+
+  findOne(id: string) {
+    return `This action returns a #${id} concert`;
+  }
+
+  update(id: string, updateConcertDto: UpdateConcertDto) {
+    return `This action updates a #${id} concert`;
+  }
+
+  remove(id: string) {
+    return `This action removes a #${id} concert`;
+  }
 }

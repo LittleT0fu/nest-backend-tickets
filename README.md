@@ -53,3 +53,4 @@ $ npm run test:cov
 
 nestJS mongoDB connection : https://docs.nestjs.com/techniques/mongodb
 read mongoDB_URI from ENV file : https://stackoverflow.com/questions/72460269/how-to-read-a-env-file-on-mongoosemodule-in-nestjs
+nested schema : https://stackoverflow.com/questions/62762492/nestjs-how-to-create-nested-schema-with-decorators
