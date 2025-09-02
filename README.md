@@ -16,6 +16,13 @@ Schema -> Interface to mongoDB
 $ npm install
 ```
 
+create ENV file include :
+
+```
+PORT
+MONGODB_URI
+```
+
 ## Compile and run the project
 
 ```bash
@@ -41,3 +48,7 @@ $ npm run test:e2e
 # test coverage
 $ npm run test:cov
 ```
+
+## Ref
+
+nestJS mongoDB connection : https://docs.nestjs.com/techniques/mongodb
