@@ -21,8 +21,20 @@ export class ConcertsService {
     return result.save();
   }
 
-  async findAll(): Promise<Concert[]> {
-    return this.concertModel.find().exec();
+  async findAll(Data: { userName: string }) {
+    const result = await this.concertModel.find().exec();
+    const newResult = result.map((re) => {
+      const reObject = re.toObject();
+      const { reserved, ...rest } = reObject;
+      return {
+        ...rest,
+        isUserReserved: re.reserved.some(
+          (res) => res.userName === Data.userName,
+        ),
+      };
+    });
+
+    return newResult;
   }
 
   async findOne(id: string) {

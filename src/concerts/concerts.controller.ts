@@ -22,8 +22,8 @@ export class ConcertsController {
   }
 
   @Get()
-  findAll() {
-    return this.concertsService.findAll();
+  findAll(@Body() Data) {
+    return this.concertsService.findAll(Data);
   }
 
   @Get(':id')
