@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { ConcertsService } from './concerts.service';
 import { CreateConcertDto } from './dto/create-concert.dto';
 import { ReservationDto } from './dto/reservation-dto';
@@ -35,7 +43,6 @@ export class ConcertsController {
 
   @Post(':id/reserve')
   reserveSeat(@Param('id') id: string, @Body() reservationDto: ReservationDto) {
-    console.log(id)
     return this.concertsService.reserveSeat(id, reservationDto);
   }
 }

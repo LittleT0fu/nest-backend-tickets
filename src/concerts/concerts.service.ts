@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { CreateConcertDto } from './dto/create-concert.dto';
 import { ReservationDto } from './dto/reservation-dto';
 
@@ -22,18 +26,26 @@ export class ConcertsService {
   }
 
   async findOne(id: string) {
-    //check id is valid object id
-    if (!Types.ObjectId.isValid(id)) {
-      return { message: 'id not found' };
+    try {
+      //check id is valid object id
+      if (!Types.ObjectId.isValid(id)) {
+        throw new BadRequestException('id not found');
+      }
+      const result = await this.concertModel.findById(id).exec();
+      if (!result) {
+        throw new NotFoundException('id not found');
+      }
+      return { message: 'success' };
+    } catch (error) {
+      throw error;
     }
-    return this.concertModel.findById(id).exec();
   }
 
   async remove(id: string) {
     try {
       //check valid id
       if (!Types.ObjectId.isValid(id)) {
-        throw new NotFoundException('id not found');
+        throw new BadRequestException('id not found');
       }
       const result = await this.concertModel.findByIdAndDelete(id).exec();
       if (!result) {
@@ -49,12 +61,27 @@ export class ConcertsService {
     concertId: string,
     reservation: ReservationDto,
   ): Promise<Concert | null> {
-    console.log(concertId);
-    return this.concertModel.findByIdAndUpdate(
+    const alreadyReserved = await this.concertModel
+      .findOne({
+        _id: concertId,
+        reserved: {
+          $elemMatch: {
+            userName: reservation.userName,
+            action: 'reserve',
+          },
+        },
+      })
+      .exec();
+    if (alreadyReserved) {
+      throw new BadRequestException('user already reserved');
+    }
+
+    const result = await this.concertModel.findByIdAndUpdate(
       concertId,
       { $push: { reserved: reservation } },
       { new: true },
     );
+    return result;
   }
 
   // async cacncleReserve(
