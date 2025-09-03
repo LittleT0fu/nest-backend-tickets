@@ -58,6 +58,16 @@ export class ConcertsService {
   }
 
   async reserveSeat(concertId: string, userName: string) {
+    //check concert id is valid
+    if (!Types.ObjectId.isValid(concertId)) {
+      throw new BadRequestException('concert id is not valid');
+    }
+    //check concert is exist
+    const concert = await this.concertModel.findById(concertId).exec();
+    if (!concert) {
+      throw new NotFoundException('concert not found');
+    }
+    //check user already reserved
     const alreadyReserved = await this.concertModel
       .findOne({
         _id: concertId,
@@ -72,8 +82,16 @@ export class ConcertsService {
     if (alreadyReserved) {
       throw new BadRequestException('user already reserved');
     }
+    //check seat is full
+    const seatReserved =
+      concert?.reserved.filter(
+        (reservation) => reservation.action === 'reserve',
+      ).length || 0;
+    if (seatReserved >= concert.seat) {
+      throw new BadRequestException('seat is full');
+    }
 
-    // psuh new reserve
+    // push new reserve
     const result = await this.concertModel.findByIdAndUpdate(
       concertId,
       {
@@ -90,6 +108,17 @@ export class ConcertsService {
   }
 
   async cancleReserve(concertId: string, userName: string) {
+    //check concert id is valid
+    if (!Types.ObjectId.isValid(concertId)) {
+      throw new BadRequestException('concert id is not valid');
+    }
+    //check concert is exist
+    const concert = await this.concertModel.findById(concertId).exec();
+    if (!concert) {
+      throw new NotFoundException('concert not found');
+    }
+
+    //check user already reserved
     const result = await this.concertModel.findOneAndUpdate(
       {
         _id: concertId,
@@ -106,5 +135,18 @@ export class ConcertsService {
       throw new NotFoundException('user not found');
     }
     return { message: 'cancel success', user: userName };
+  }
+
+  async getReservedSeatCount(concertId: string): Promise<number> {
+    const result = await this.concertModel
+      .aggregate([
+        { $match: { _id: new Types.ObjectId(concertId) } },
+        { $unwind: '$reserved' },
+        { $match: { 'reserved.action': 'reserve' } },
+        { $count: 'total' },
+      ])
+      .exec();
+
+    return result[0]?.total || 0;
   }
 }
