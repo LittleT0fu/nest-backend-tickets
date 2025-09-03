@@ -1,5 +1,13 @@
+import { IsString, IsNotEmpty, IsNumber } from 'class-validator';
+
 export class CreateConcertDto {
-    readonly name : string;
-    readonly description : string;
-    readonly seat : string;
+  @IsString()
+  @IsNotEmpty()
+  readonly name: string;
+  @IsString()
+  @IsNotEmpty()
+  readonly description: string;
+  @IsNumber()
+  @IsNotEmpty()
+  readonly seat: number;
 }
