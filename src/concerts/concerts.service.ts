@@ -57,10 +57,7 @@ export class ConcertsService {
     }
   }
 
-  async reserveSeat(
-    concertId: string,
-    userName: string,
-  ): Promise<Concert | null> {
+  async reserveSeat(concertId: string, userName: string) {
     const alreadyReserved = await this.concertModel
       .findOne({
         _id: concertId,
@@ -89,7 +86,7 @@ export class ConcertsService {
       },
       { new: true },
     );
-    return result;
+    return { message: 'reserve success', user: userName };
   }
 
   async cancleReserve(concertId: string, userName: string) {
@@ -105,6 +102,9 @@ export class ConcertsService {
       },
       { new: true },
     );
-    return result;
+    if (!result) {
+      throw new NotFoundException('user not found');
+    }
+    return { message: 'cancel success', user: userName };
   }
 }
