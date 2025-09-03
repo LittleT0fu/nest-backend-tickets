@@ -24,13 +24,13 @@ export class ConcertsService {
   async findAll(Data: { userName: string }) {
     const result = await this.concertModel.find().exec();
     const newResult = result.map((re) => {
+      //convert mongoose object to plain object
       const reObject = re.toObject();
       const { reserved, ...rest } = reObject;
+      //add isUserReserved to the result
       return {
         ...rest,
-        isUserReserved: re.reserved.some(
-          (res) => res.userName === Data.userName,
-        ),
+        isUserReserved: reserved.some((res) => res.userName === Data.userName),
       };
     });
 
