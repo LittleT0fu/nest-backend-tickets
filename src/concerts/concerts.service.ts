@@ -59,14 +59,14 @@ export class ConcertsService {
 
   async reserveSeat(
     concertId: string,
-    reservation: ReservationDto,
+    userName: string,
   ): Promise<Concert | null> {
     const alreadyReserved = await this.concertModel
       .findOne({
         _id: concertId,
         reserved: {
           $elemMatch: {
-            userName: reservation.userName,
+            userName: userName,
             action: 'reserve',
           },
         },
@@ -76,26 +76,35 @@ export class ConcertsService {
       throw new BadRequestException('user already reserved');
     }
 
+    // psuh new reserve
     const result = await this.concertModel.findByIdAndUpdate(
       concertId,
-      { $push: { reserved: reservation } },
+      {
+        $push: {
+          reserved: {
+            userName: userName,
+            action: 'reserve',
+          },
+        },
+      },
       { new: true },
     );
     return result;
   }
 
-  // async cacncleReserve(
-  //   concertId: string,
-  //   reservation: {
-  //     userName: string;
-  //     concertName: string;
-  //     action: 'cancel';
-  //   },
-  // ): Promise<Concert | null> {
-  //   return this.concertModel.findByIdAndUpdate(
-  //     concertId,
-  //     { $pull: { reserved: reservation } },
-  //     { new: true },
-  //   );
-  // }
+  async cancleReserve(concertId: string, userName: string) {
+    const result = await this.concertModel.findOneAndUpdate(
+      {
+        _id: concertId,
+        reserved: {
+          $elemMatch: { userName: userName, action: 'reserve' },
+        },
+      },
+      {
+        $set: { 'reserved.$.action': 'cancel' },
+      },
+      { new: true },
+    );
+    return result;
+  }
 }

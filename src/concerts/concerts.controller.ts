@@ -42,7 +42,7 @@ export class ConcertsController {
   }
 
   @Post(':id/reserve')
-  reserveSeat(@Param('id') id: string, @Body() reservationDto: ReservationDto) {
-    return this.concertsService.reserveSeat(id, reservationDto);
+  reserveSeat(@Param('id') id: string, @Body() userName: string) {
+    return this.concertsService.reserveSeat(id, userName);
   }
 }
