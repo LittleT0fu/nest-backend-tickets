@@ -41,7 +41,6 @@ export class ConcertsService {
             .length || 0) >= rest.seat,
       };
     });
-
     return newResult;
   }
 

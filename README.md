@@ -12,15 +12,20 @@ Schema -> Interface to mongoDB
 
 ## Project setup
 
+before running the project, make sure you have a **MongoDB URI** configured.  
+You can either use a local MongoDB instance or a cloud provider like [MongoDB Atlas](https://www.mongodb.com/atlas).
+
+install project dependecies
+
 ```bash
 $ npm install
 ```
 
-create ENV file include :
+create `.env` file in the root of the project and add the following :
 
-```
-PORT
-MONGODB_URI
+```env
+PORT=3000
+MONGODB_URI=mongodb://127.0.0.1:27017/my_database
 ```
 
 ## Compile and run the project
