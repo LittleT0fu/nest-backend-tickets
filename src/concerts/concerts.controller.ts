@@ -22,7 +22,7 @@ export class ConcertsController {
   }
 
   @Get()
-  findAll(@Body() Data) {
+  findAll(@Body() Data: { userName?: string } = {}) {
     return this.concertsService.findAll(Data);
   }
 

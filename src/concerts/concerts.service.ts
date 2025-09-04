@@ -21,7 +21,7 @@ export class ConcertsService {
     return result.save();
   }
 
-  async findAll(Data: { userName: string }) {
+  async findAll(Data: { userName?: string }) {
     const result = await this.concertModel.find().exec();
     const newResult = result.map((re) => {
       //convert mongoose object to plain object
@@ -30,7 +30,15 @@ export class ConcertsService {
       //add isUserReserved to the result
       return {
         ...rest,
-        isUserReserved: reserved.some((res) => res.userName === Data.userName),
+        isUserReserved: Data.userName
+          ? reserved.some(
+              (res) =>
+                res.userName === Data.userName && res.action === 'reserve',
+            )
+          : false,
+        isSeatFull:
+          reserved.filter((reservation) => reservation.action === 'reserve')
+            .length || 0 >= rest.seat,
       };
     });
 
@@ -47,7 +55,7 @@ export class ConcertsService {
       if (!result) {
         throw new NotFoundException('id not found');
       }
-      return { message: 'success' };
+      return result;
     } catch (error) {
       throw error;
     }
