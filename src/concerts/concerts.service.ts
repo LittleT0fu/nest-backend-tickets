@@ -37,8 +37,8 @@ export class ConcertsService {
             )
           : false,
         isSeatFull:
-          reserved.filter((reservation) => reservation.action === 'reserve')
-            .length || 0 >= rest.seat,
+          (reserved.filter((reservation) => reservation.action === 'reserve')
+            .length || 0) >= rest.seat,
       };
     });
 
