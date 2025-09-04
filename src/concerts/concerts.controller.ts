@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { ConcertsService } from './concerts.service';
 import { CreateConcertDto } from './dto/create-concert.dto';
@@ -22,8 +23,9 @@ export class ConcertsController {
   }
 
   @Get()
-  findAll(@Body() Data: { userName?: string } = {}) {
-    return this.concertsService.findAll(Data);
+  findAll(@Query('userName') userName: string) {
+    console.log(userName);
+    return this.concertsService.findAll(userName);
   }
 
   @Get(':id')
