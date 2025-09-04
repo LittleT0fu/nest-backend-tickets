@@ -48,7 +48,6 @@ export class ConcertsController {
 
   @Patch(':id/reserve')
   cancelReserve(@Param('id') id: string, @Body() Data) {
-    console.log(id, Data);
     return this.concertsService.cancleReserve(id, Data.userName);
   }
 }
