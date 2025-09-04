@@ -28,6 +28,9 @@ PORT=3000
 MONGODB_URI=mongodb://127.0.0.1:27017/my_database
 ```
 
+The server will start on [http://localhost:3000](http://localhost:3000) by default.  
+If you set a different `PORT` in your `.env` file, the server will run on that port instead.
+
 ## Compile and run the project
 
 ```bash
@@ -53,6 +56,17 @@ $ npm run test:e2e
 # test coverage
 $ npm run test:cov
 ```
+
+## Folder Structure
+src/
+├── app.module.ts
+├── main.ts
+├── concert/
+│   ├── concert.controller.ts
+│   ├── concert.service.ts
+│   ├── concert.module.ts
+│   ├── dto/
+│   └── schemas/
 
 ## Ref
 
