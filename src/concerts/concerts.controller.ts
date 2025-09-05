@@ -26,7 +26,7 @@ export class ConcertsController {
   findAll(@Query('userName') userName: string) {
     return this.concertsService.findAll(userName);
   }
-  
+
   @Get('reserve')
   getAllReserve() {
     return this.concertsService.getAllReserve();
@@ -48,12 +48,15 @@ export class ConcertsController {
   }
 
   @Post(':id/reserve')
-  reserveSeat(@Param('id') id: string, @Body() Data) {
-    return this.concertsService.reserveSeat(id, Data.userName);
+  reserveSeat(@Param('id') id: string, @Body() reservationDto: ReservationDto) {
+    return this.concertsService.reserveSeat(id, reservationDto);
   }
 
   @Patch(':id/reserve')
-  cancelReserve(@Param('id') id: string, @Body() Data) {
-    return this.concertsService.cancleReserve(id, Data.userName);
+  cancelReserve(
+    @Param('id') id: string,
+    @Body() reservationDto: ReservationDto,
+  ) {
+    return this.concertsService.cancleReserve(id, reservationDto);
   }
 }

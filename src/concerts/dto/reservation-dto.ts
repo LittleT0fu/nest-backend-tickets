@@ -1,9 +1,7 @@
-export class ReservationDto {
-    userName: string;
-    action: ReservationAction;
-}
+import { IsString, IsNotEmpty } from 'class-validator';
 
-export enum ReservationAction {
-    RESERVE = 'reserve',
-    CANCEL = 'cancel'
+export class ReservationDto {
+  @IsString()
+  @IsNotEmpty()
+  readonly userName: string;
 }

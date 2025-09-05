@@ -76,7 +76,7 @@ export class ConcertsService {
     }
   }
 
-  async reserveSeat(concertId: string, userName: string) {
+  async reserveSeat(concertId: string, reservationDto: ReservationDto) {
     //check concert id is valid
     if (!Types.ObjectId.isValid(concertId)) {
       throw new BadRequestException('concert id is not valid');
@@ -92,7 +92,7 @@ export class ConcertsService {
         _id: concertId,
         reserved: {
           $elemMatch: {
-            userName: userName,
+            userName: reservationDto.userName,
             action: 'reserve',
           },
         },
@@ -116,17 +116,17 @@ export class ConcertsService {
       {
         $push: {
           reserved: {
-            userName: userName,
+            userName: reservationDto.userName,
             action: 'reserve',
           },
         },
       },
       { new: true },
     );
-    return { message: 'reserve success', user: userName };
+    return { message: 'reserve success', user: reservationDto.userName };
   }
 
-  async cancleReserve(concertId: string, userName: string) {
+  async cancleReserve(concertId: string, reservationDto: ReservationDto) {
     //check concert id is valid
     if (!Types.ObjectId.isValid(concertId)) {
       throw new BadRequestException('concert id is not valid');
@@ -142,7 +142,7 @@ export class ConcertsService {
       {
         _id: concertId,
         reserved: {
-          $elemMatch: { userName: userName, action: 'reserve' },
+          $elemMatch: { userName: reservationDto.userName, action: 'reserve' },
         },
       },
       {
@@ -153,7 +153,7 @@ export class ConcertsService {
     if (!result) {
       throw new NotFoundException('user not found');
     }
-    return { message: 'cancel success', user: userName };
+    return { message: 'cancel success', user: reservationDto.userName };
   }
 
   async getAllReserve() {
