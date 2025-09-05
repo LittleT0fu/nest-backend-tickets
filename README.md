@@ -68,8 +68,21 @@ src/
 │   ├── dto/
 │   └── schemas/
 
-## Ref
+### Endpoints
 
-nestJS mongoDB connection : https://docs.nestjs.com/techniques/mongodb
-read mongoDB_URI from ENV file : https://stackoverflow.com/questions/72460269/how-to-read-a-env-file-on-mongoosemodule-in-nestjs
-nested schema : https://stackoverflow.com/questions/62762492/nestjs-how-to-create-nested-schema-with-decorators
+#### Concerts
+
+| Method | Endpoint | Description | Body |
+|--------|----------|-------------|------|
+| `GET` | `/concerts` | Get all concerts | Query: `userName` (optional) |
+| `GET` | `/concerts/:id` | Get concert by ID | - |
+| `POST` | `/concerts` | Create new concert | `CreateConcertDto` |
+| `DELETE` | `/concerts/:id` | Delete concert | - |
+
+#### Reservations
+
+| Method | Endpoint | Description | Body |
+|--------|----------|-------------|------|
+| `GET` | `/concerts/reserve` | Get all reservations | - |
+| `POST` | `/concerts/:id/reserve` | Reserve a seat | `ReservationDto` |
+| `PATCH` | `/concerts/:id/reserve` | Cancel reservation | `ReservationDto` |
