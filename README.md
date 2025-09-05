@@ -15,7 +15,7 @@ Schema -> Interface to mongoDB
 before running the project, make sure you have a **MongoDB URI** configured.  
 You can either use a local MongoDB instance or a cloud provider like [MongoDB Atlas](https://www.mongodb.com/atlas).
 
-install project dependecies
+install project dependencies
 
 ```bash
 $ npm install
@@ -58,31 +58,32 @@ $ npm run test:cov
 ```
 
 ## Folder Structure
+
 src/
 ├── app.module.ts
 ├── main.ts
-├── concert/
-│   ├── concert.controller.ts
-│   ├── concert.service.ts
-│   ├── concert.module.ts
-│   ├── dto/
-│   └── schemas/
+├── concerts/
+│ ├── concerts.controller.ts
+│ ├── concerts.service.ts
+│ ├── concerts.module.ts
+│ ├── dto/
+│ └── schemas/
 
 ### Endpoints
 
 #### Concerts
 
-| Method | Endpoint | Description | Body |
-|--------|----------|-------------|------|
-| `GET` | `/concerts` | Get all concerts | Query: `userName` (optional) |
-| `GET` | `/concerts/:id` | Get concert by ID | - |
-| `POST` | `/concerts` | Create new concert | `CreateConcertDto` |
-| `DELETE` | `/concerts/:id` | Delete concert | - |
+| Method   | Endpoint        | Description        | Body                         |
+| -------- | --------------- | ------------------ | ---------------------------- |
+| `GET`    | `/concerts`     | Get all concerts   | Query: `userName` (optional) |
+| `GET`    | `/concerts/:id` | Get concert by ID  | -                            |
+| `POST`   | `/concerts`     | Create new concert | `CreateConcertDto`           |
+| `DELETE` | `/concerts/:id` | Delete concert     | -                            |
 
 #### Reservations
 
-| Method | Endpoint | Description | Body |
-|--------|----------|-------------|------|
-| `GET` | `/concerts/reserve` | Get all reservations | - |
-| `POST` | `/concerts/:id/reserve` | Reserve a seat | `ReservationDto` |
-| `PATCH` | `/concerts/:id/reserve` | Cancel reservation | `ReservationDto` |
+| Method  | Endpoint                | Description          | Body             |
+| ------- | ----------------------- | -------------------- | ---------------- |
+| `GET`   | `/concerts/reserve`     | Get all reservations | -                |
+| `POST`  | `/concerts/:id/reserve` | Reserve a seat       | `ReservationDto` |
+| `PATCH` | `/concerts/:id/reserve` | Cancel reservation   | `ReservationDto` |
