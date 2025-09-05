@@ -17,8 +17,18 @@ export class ConcertsService {
   ) {}
 
   async create(createConcertDto: CreateConcertDto): Promise<Concert> {
+    const existingConcert = await this.concertModel
+      .findOne({
+        name: createConcertDto.name,
+      })
+      .exec();
+
+    if (existingConcert) {
+      throw new BadRequestException('A concert with this name already exists');
+    }
     const result = new this.concertModel(createConcertDto);
-    return result.save();
+    const savedConcert = await result.save();
+    return savedConcert;
   }
 
   async findAll(userName: string) {
