@@ -24,8 +24,12 @@ export class ConcertsController {
 
   @Get()
   findAll(@Query('userName') userName: string) {
-    console.log(userName);
     return this.concertsService.findAll(userName);
+  }
+  
+  @Get('reserve')
+  getAllReserve() {
+    return this.concertsService.getAllReserve();
   }
 
   @Get(':id')

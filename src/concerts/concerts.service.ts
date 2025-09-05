@@ -24,7 +24,7 @@ export class ConcertsService {
   async findAll(userName: string) {
     const result = await this.concertModel.find().exec();
     const newResult = result.map((re) => {
-      console.log(userName);
+      userName;
       //convert mongoose object to plain object
       const reObject = re.toObject();
       const { reserved, ...rest } = reObject;
@@ -156,16 +156,33 @@ export class ConcertsService {
     return { message: 'cancel success', user: userName };
   }
 
-  async getReservedSeatCount(concertId: string): Promise<number> {
+  async getAllReserve() {
+    console.log('get all reserve function is call');
     const result = await this.concertModel
-      .aggregate([
-        { $match: { _id: new Types.ObjectId(concertId) } },
-        { $unwind: '$reserved' },
-        { $match: { 'reserved.action': 'reserve' } },
-        { $count: 'total' },
-      ])
+      .find({}, { name: 1, reserved: 1, seat: 1 })
       .exec();
 
-    return result[0]?.total || 0;
+    console.log(result);
+    // Flatten all reservations from all concerts
+    const allReservations: any[] = [];
+
+    result.forEach((concert) => {
+      concert.reserved.forEach((reservation) => {
+        allReservations.push({
+          concertId: concert._id,
+          concertName: concert.name,
+          seat: concert.seat,
+          userName: reservation.userName,
+          action: reservation.action,
+          reservedAt: (reservation as any).createdAt,
+          updatedAt: (reservation as any).updatedAt,
+        });
+      });
+    });
+
+    return {
+      totalReservations: allReservations.length,
+      reservations: allReservations,
+    };
   }
 }
